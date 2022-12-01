@@ -1,24 +1,26 @@
 // The API isBadVersion is defined for you.
 
 class Solution {
-    public:
+public:
     int firstBadVersion(int n) {
-        long long int beg,last,mid;
-        beg = 1 , last = n;
-        long int pos = 1;
-        while(beg<=last){
-            // ensure you calculate mid values this way ,otherwise ,it would cause overflow
-            mid = beg + (last-beg)/2;
-            bool x = isBadVersion(mid);
-            if(x == true){
-                pos = mid;
-                last = mid-1;
+        int left = 1, right = n;
+        while(left < right){
+            int mid = left + (right-left)/2;
+            // cout << left << ", " << mid << ", " << right << endl;
+            if(isBadVersion(mid)){
+                /*
+                when right is equal to left+1, 
+                mid is also left,
+                we should jump out (left < right = mid breaks),  
+                because we have found 
+                the first bad version which is mid, 
+                and mid is equal to left
+                */
+                right = mid;
+            }else{
+                left = mid+1;
             }
-            else
-                beg = mid+1;
         }
-
-        // return the first index of faulty product
-        return pos;
+        return left;
     }
 };
